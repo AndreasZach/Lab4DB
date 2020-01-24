@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Lab4DB
 {
-    class OrderStatusController
+    class OrderStatusController : Controller<OrderStatus>
     {
+        protected override OrderStatus Model { get; set; }
+
     }
 }

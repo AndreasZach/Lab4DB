@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Lab4DB
 {
-    class OrderStatus
+    [Table("Order_Status")]
+    public class OrderStatus
     {
-        public int Id { get; set; }
-        public DateTime DateReceived { get; set; }
-        public DateTime EstDeliveryDate { get; set; }
+        [Key]
+        public int OrderStatusId { get; set; }
+
+        [ForeignKey("Order")]
+        public int OrderID { get; set; }
+
+        [Column("current_status", TypeName= "nvarchar")]
+        [Required]
         public string Status { get; set; }
+
+        [Column("estimated_delivery", TypeName = "datetime2")]
+        public DateTime EstDeliveryDate { get; set; }
+
+        public virtual Order Order { get; set; }
 
     }
 }

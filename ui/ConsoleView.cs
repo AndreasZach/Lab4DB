@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Lab4DB
 {
-    class ConsoleView
+    public class ConsoleView
     {
+        public void PrintToView(string toPrint)
+        {
+            Console.WriteLine(toPrint);
+        }
     }
 }
