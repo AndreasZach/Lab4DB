@@ -9,20 +9,22 @@ namespace Lab4DB
     [Table("Order_Status")]
     public class OrderStatus
     {
-        [Key]
-        public int OrderStatusId { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Key]
+        //public int OrderStatusId { get; set; }
 
-        [ForeignKey("Order")]
-        public int OrderID { get; set; }
+        //[ForeignKey("Order")]
+        //public int OrderID { get; set; }
 
         [Column("current_status", TypeName= "nvarchar")]
+        [MaxLength(15)]
         [Required]
-        public string Status { get; set; }
+        public string Status { get; set; }  // Switch to Enums if I expand.
 
         [Column("estimated_delivery", TypeName = "datetime2")]
-        public DateTime EstDeliveryDate { get; set; }
+        public DateTime? EstDeliveryDate { get; set; }
 
-        public virtual Order Order { get; set; }
+        //public virtual Order Order { get; set; }
 
     }
 }

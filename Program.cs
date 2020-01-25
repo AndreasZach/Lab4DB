@@ -14,12 +14,37 @@ namespace Lab4DB
     // med andra ord kunna bygga på grunden och göra detta till ett större projekt i framtiden.
 
 
-        // TODO: find a generic way to interact with the Controllers
+    // TODO: Find a more effective solution to handle user input (return int or string) in controllers.
+    // TODO: Add error handling on all UserInput calls. (Error handler method with try/catch?)
+    // TODO: Database communication layer with methods for saving changes, ensure created, async etc etc?
+    // TODO: See if there is a better way of creates a DB connections than just using strings.
+    // TODO: Find a way to auto-increment ID with annotations.
     class Program
     {
         static void Main(string[] args)
         {
-            
+            var orderControl = new OrderController();
+            int userChoice = 0;
+            while (userChoice != 4)
+            {
+                orderControl.PrintMainMenu();
+                userChoice = orderControl.UserInputHandlerInt(4);
+                switch (userChoice)
+                {
+                    case 1:
+                        orderControl.CreateOrder();
+                        break;
+                    case 2:
+                        orderControl.EditOrder();
+                        break;
+                    case 3:
+                        orderControl.ShowOrders();
+                        break;
+                }
+                Console.Clear();
+            }
+
+
         }
     }
 }

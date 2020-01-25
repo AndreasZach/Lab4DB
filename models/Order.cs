@@ -9,8 +9,9 @@ namespace Lab4DB
     [Table("Orders")]
     public class Order
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int OrderId { get; set; }
+        public int Id { get; set; }
 
         [Column("customer_name", TypeName = "nvarchar")]
         [MaxLength(35)]

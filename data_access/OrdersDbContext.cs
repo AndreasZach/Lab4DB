@@ -17,6 +17,8 @@ namespace Lab4DB
             _connectionKey = key;
             _dbName = dbName;
         }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderStatus> OrderStatus { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,7 +26,14 @@ namespace Lab4DB
             optionsBuilder.UseLazyLoadingProxies();
         }
 
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderStatus> OrderStatus { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>().OwnsOne(c => c.OrderStatus);
+            //modelBuilder.Entity<Order>().HasKey(o => o.OrderId);
+            //modelBuilder.Entity<Order>().Property(o => o.OrderId).ValueGeneratedOnAdd();
+            //modelBuilder.Entity<OrderStatus>().HasKey(os => os.OrderStatusId);
+            //modelBuilder.Entity<OrderStatus>().Property(os => os.OrderStatusId).ValueGeneratedOnAdd();
+        }
+
     }
 }
