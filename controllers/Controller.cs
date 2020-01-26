@@ -21,13 +21,17 @@ namespace Lab4DB
 
         public string UserInputHandlerString(int? maxVal = null)
         {
-            string input;
-
-            input = Console.ReadLine(); // Error handling needed.
+            string input = Console.ReadLine();
             if (String.IsNullOrWhiteSpace(input) || input.Length < 1)
-                throw new Exception("Entry must be at least one character long.");
+            {
+                view.PrintToView("Entry must be at least one character long.");
+                return null;
+            }
             if (input.Length > maxVal)
-                throw new Exception($"Entry cannot be longer than {maxVal} characters.");
+            {
+                view.PrintToView($"Entry cannot be longer than {maxVal} characters.");
+                return null;
+            }
 
             return input;
         }
@@ -35,12 +39,24 @@ namespace Lab4DB
         public int UserInputHandlerInt(int maxVal, int minVal = 1)
         {
             int input;
-            if (!Int32.TryParse(Console.ReadLine(), out input)) // Error handling needed.
-                throw new Exception("Invalid input. Only integers are supported for this entry.");
+            if (!Int32.TryParse(Console.ReadLine(), out input))
+            {
+                view.PrintToView("Invalid input. Only integers are supported for this entry.");
+                return -1;
+            }
             if (input < minVal || input > maxVal)
-                throw new Exception($"Entry can only be between 1 and {maxVal}");
+            {
+                view.PrintToView($"Entry can only be between 1 and {maxVal}");
+                return -1;
+            }
 
             return input;
+        }
+
+        public void CommitDbChange()
+        {
+            orderContext.Database.EnsureCreated();
+            orderContext.SaveChanges();
         }
 
         public void PrintMainMenu()

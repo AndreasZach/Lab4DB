@@ -15,8 +15,8 @@ namespace Lab4DB
 
 
     // TODO: Find a more effective solution to handle user input (return int or string) in controllers.
-    // TODO: Add error handling on all UserInput calls. (Error handler method with try/catch?)
-    // TODO: Database communication layer with methods for saving changes, ensure created, async etc etc?
+    // TODO: Find a better way to handle errors. (Method to handle errors?)
+    // TODO: Database communication layer with methods for saving changes, ensure created, async etc etc? (Handle model updates?)
     // TODO: See if there is a better way of creates a DB connections than just using strings.
     // TODO: Find a way to auto-increment ID with annotations.
     class Program
