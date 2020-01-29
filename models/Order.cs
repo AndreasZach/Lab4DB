@@ -11,7 +11,7 @@ namespace Lab4DB
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Column("customer_name", TypeName = "nvarchar")]
         [MaxLength(35)]

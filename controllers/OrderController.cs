@@ -10,6 +10,7 @@ namespace Lab4DB
         public OrderController()
         {
             orderContext.Database.EnsureCreated();
+            MainMenuControl();
         }
 
         protected override Order Model { get; set; }
@@ -29,7 +30,7 @@ namespace Lab4DB
             orderContext.Orders.Add(
                 new Order
                 {
-                    Id = (IdCounter+=1),
+                    Id = new Guid(),
                     Customer = custName,
                     Product = prodName,
                     Date = DateTime.Now,
@@ -39,23 +40,25 @@ namespace Lab4DB
                     }
                 });
             CommitDbChange();
+            view.PrintToView("Order successully added.\n\nPress any key to return to the Main Menu");
+            Console.ReadKey(true);
+            Console.Clear();
         }
 
         public void EditOrder()
         {
             ShowOrders();
-
             view.PrintToView("Enter the Order ID of the Order you wish to edit: ");
-            int inputId = UserInputHandlerInt(ModelList.Select(id => id.Id).Max());
-            Model = ModelList.Where(o => o.Id == inputId).FirstOrDefault();
-            if (Model == null)
+            int inputId = UserInputHandlerInt(ModelList.Count());
+            if (inputId < 0)
             {
-                view.PrintToView("No Order ID matches you selection.");
+                PrintError("No Order matches you selection.");
                 return;
             }
-
+            Model = ModelList[inputId - 1];
+            if (Model == null)
+                return;
             Console.Clear();
-
             var input = 0;
             while (input != 4)
             {
@@ -83,11 +86,16 @@ namespace Lab4DB
                         try
                         {
                             DateTime date = DateTime.Parse(UserInputHandlerString(10));
+                            if (date < DateTime.Today)
+                            {
+                                PrintError("Estimatd time of delivery must be set to the current, or a future date.");
+                                goto default;
+                            }
                             Model.OrderStatus.EstDeliveryDate = date;
                         }
                         catch (FormatException)
                         {
-                            view.PrintToView("Invalid Date format. Date must be written as YYYY-MM-DD");
+                            PrintError("Invalid Date format. Date must be written as YYYY-MM-DD");
                             goto default;
                         }
                         break;
@@ -98,8 +106,6 @@ namespace Lab4DB
                         break;
                     default:
                         input = 4;
-                        view.PrintToView("No changes have been saved.\n\nPress any key to return to main menu.");
-                        Console.ReadKey(true);
                         break;
                 }
                 Console.Clear();
@@ -108,27 +114,47 @@ namespace Lab4DB
 
         public void ShowOrders()
         {
+            Console.Clear();
             ModelList = orderContext.Orders.ToList();
             if (ModelList.Count() == 0)
             {
-                view.PrintToView("No orders found.");
-                Console.Clear();
+                PrintError("No orders found.");
                 return;
             }
             ModelList.ForEach(order => ShowOrderDetails(order));
-            view.PrintToView("Press any key to continue...");
-            Console.ReadKey(true);
         }
 
         public void ShowOrderDetails(Order order)
         {
-            view.PrintToView($"\n\n" +
-                $"Order ID: {order.Id}\n" +
+            view.PrintToView(
+                $"[{ModelList.IndexOf(order) + 1}]\n" +
                 $"Customer Name: {order.Customer}\n" +
                 $"Product: {order.Product}\n" +
                 $"Order Date: {order.Date}\n" +
                 $"Current Status: {order.OrderStatus.Status}\n" +
-                $"Estimated date of delivery: {order.OrderStatus.EstDeliveryDate.ToString() ?? "Unknown"}\n\n");
+                $"Estimated date of delivery: {order.OrderStatus.EstDeliveryDate.ToString()}\n");
+        }
+
+        public void MainMenuControl()
+        {
+            int userChoice = 0;
+            while (userChoice != 4)
+            {
+                view.PrintToView("Select an option:\n[1] Create a new order\n[2] Edit an existing order\n[3] Show order details\n[4] Exit");
+                userChoice = UserInputHandlerInt(4);
+                switch (userChoice)
+                {
+                    case 1:
+                        CreateOrder();
+                        break;
+                    case 2:
+                        EditOrder();
+                        break;
+                    case 3:
+                        ShowOrders();
+                        break;
+                }
+            }
         }
     }
 }

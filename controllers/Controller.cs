@@ -24,12 +24,12 @@ namespace Lab4DB
             string input = Console.ReadLine();
             if (String.IsNullOrWhiteSpace(input) || input.Length < 1)
             {
-                view.PrintToView("Entry must be at least one character long.");
+                PrintError("Entry must be at least one character long.");
                 return null;
             }
             if (input.Length > maxVal)
             {
-                view.PrintToView($"Entry cannot be longer than {maxVal} characters.");
+                PrintError($"Entry cannot be longer than {maxVal} characters.");
                 return null;
             }
 
@@ -39,17 +39,16 @@ namespace Lab4DB
         public int UserInputHandlerInt(int maxVal, int minVal = 1)
         {
             int input;
-            if (!Int32.TryParse(Console.ReadLine(), out input))
+            if (!Int32.TryParse(Console.ReadKey(true).KeyChar.ToString(), out input))
             {
-                view.PrintToView("Invalid input. Only integers are supported for this entry.");
+                PrintError("Invalid input. Only integers are supported for this entry.");
                 return -1;
             }
             if (input < minVal || input > maxVal)
             {
-                view.PrintToView($"Entry can only be between 1 and {maxVal}");
+                PrintError($"Entry can only be between 1 and {maxVal}");
                 return -1;
             }
-
             return input;
         }
 
@@ -59,9 +58,12 @@ namespace Lab4DB
             orderContext.SaveChanges();
         }
 
-        public void PrintMainMenu()
+        public void PrintError(string error)
         {
-            view.PrintToView("Select an option:\n[1] Create a new order\n[2] Edit an existing order\n[3] Show order details\n[4] Exit");
+            view.PrintToView(error);
+            view.PrintToView("\n\nNo changes have been saved.\nPress any key to return to main menu.");
+            Console.ReadKey(true);
+            Console.Clear();
         }
 
     }
