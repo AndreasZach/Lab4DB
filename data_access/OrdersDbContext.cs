@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lab4DB
@@ -22,7 +23,16 @@ namespace Lab4DB
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseCosmos(_connectionString, _connectionKey, databaseName: _dbName);
+            try
+            {
+                optionsBuilder.UseCosmos(_connectionString, _connectionKey, databaseName: _dbName);
+            }
+            catch (CosmosException e)
+            {
+                Console.WriteLine($"An error has occurred.\nError: {e}\nStatus-Code: {e.StatusCode}\nPress any key to exit the program...");
+                Console.ReadKey(true);
+                Environment.Exit(1);
+            }
             optionsBuilder.UseLazyLoadingProxies();
         }
 
