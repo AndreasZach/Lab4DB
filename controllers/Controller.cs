@@ -7,8 +7,8 @@ namespace Lab4DB
     public class Controller<T>
     {
         // Set your Azure connection details here.
-        static string uri = @"https://localhost:8081";
-        static string primaryKey = @"C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        protected static string uri = @"https://localhost:8081";
+        protected static string primaryKey = @"C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
 
         protected OrdersDbContext orderContext = new OrdersDbContext(
             uri,
@@ -21,7 +21,7 @@ namespace Lab4DB
 
         protected virtual List<T> ModelList { get; set; }
 
-        public string UserInputHandlerString(int? maxVal = null)
+        protected string UserInputHandlerString(int? maxVal = null)
         {
             string input = Console.ReadLine();
             if (String.IsNullOrWhiteSpace(input) || input.Length < 1)
@@ -38,7 +38,7 @@ namespace Lab4DB
             return input;
         }
 
-        public int UserInputHandlerInt(int maxVal, int minVal = 1)
+        protected int UserInputHandlerInt(int maxVal, int minVal = 1)
         {
             int input;
             if (!Int32.TryParse(Console.ReadKey(true).KeyChar.ToString(), out input))
@@ -54,13 +54,13 @@ namespace Lab4DB
             return input;
         }
 
-        public void CommitDbChange()
+        protected void CommitDbChange()
         {
             orderContext.Database.EnsureCreated();
             orderContext.SaveChanges();
         }
 
-        public void PrintError(string error)
+        protected void PrintError(string error)
         {
             view.PrintToView(error);
             view.PrintToView("\n\nNo changes have been saved.\nPress any key to return to main menu.");

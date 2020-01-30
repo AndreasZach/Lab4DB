@@ -17,7 +17,7 @@ namespace Lab4DB
 
         protected override List<Order> ModelList { get; set; }
 
-        public void CreateOrder()
+        private void CreateOrder()
         {
             view.PrintToView("Enter customer name:");
             var custName = UserInputHandlerString(maxVal: 35);
@@ -45,7 +45,7 @@ namespace Lab4DB
             Console.Clear();
         }
 
-        public void EditOrder()
+        private void EditOrder()
         {
             ShowOrders();
             view.PrintToView("Enter the Order ID of the Order you wish to edit: ");
@@ -112,7 +112,7 @@ namespace Lab4DB
             }
         }
 
-        public void ShowOrders()
+        private void ShowOrders()
         {
             Console.Clear();
             ModelList = orderContext.Orders.ToList();
@@ -124,7 +124,7 @@ namespace Lab4DB
             ModelList.ForEach(order => ShowOrderDetails(order));
         }
 
-        public void ShowOrderDetails(Order order)
+        private void ShowOrderDetails(Order order)
         {
             view.PrintToView(
                 $"[{ModelList.IndexOf(order) + 1}]\n" +
@@ -135,7 +135,7 @@ namespace Lab4DB
                 $"Estimated date of delivery: {order.OrderStatus.EstDeliveryDate.ToString()}\n");
         }
 
-        public void MainMenuControl()
+        private void MainMenuControl()
         {
             int userChoice = 0;
             while (userChoice != 4)
