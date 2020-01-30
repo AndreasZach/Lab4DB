@@ -6,9 +6,13 @@ namespace Lab4DB
 {
     public class Controller<T>
     {
+        // Set your Azure connection details here.
+        static string uri = @"https://localhost:8081";
+        static string primaryKey = @"C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+
         protected OrdersDbContext orderContext = new OrdersDbContext(
-            @"https://localhost:8081", 
-            @"C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+            uri,
+            primaryKey,
             "OrdersDB");
 
         protected int IdCounter = 1;
@@ -35,13 +39,13 @@ namespace Lab4DB
 
             return input;
         }
-        
+
         public int UserInputHandlerInt(int maxVal, int minVal = 1)
         {
             int input;
             if (!Int32.TryParse(Console.ReadKey(true).KeyChar.ToString(), out input))
             {
-                PrintError("Invalid input. Only integers are supported for this entry.");
+                PrintError("Invalid input. Only integers are supported for this entry.\nMake sure Numlock is enabled if you used Numpad to enter a value.");
                 return -1;
             }
             if (input < minVal || input > maxVal)
